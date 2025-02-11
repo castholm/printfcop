@@ -1,0 +1,15 @@
+// © 2025 Carl Åstholm
+// SPDX-License-Identifier: MIT
+
+.{
+    .name = "printfcop",
+    .version = "0.1.0",
+    .dependencies = .{},
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+
+        "LICENSES/",
+        "LICENSE.txt",
+    },
+}
