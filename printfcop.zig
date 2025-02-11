@@ -502,7 +502,7 @@ pub fn PrintfArgs(
                                 break :fail "precision used with conversion specifier 'c'";
                             }
                             const Arg: type = switch (modifier) {
-                                .none => c_int,
+                                .none => u8,
                                 .l => break :fail "unsupported conversion specifier '" ++ format[modifier_start..(i + 1)] ++ "'",
                                 else => break :fail null,
                             };
