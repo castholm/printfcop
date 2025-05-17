@@ -9,7 +9,7 @@ comptime {
 }
 
 test "escape sequences" {
-    const printf_args = printfcop.toPrintfArgs(.c23, "%% %% %%", .{});
+    const printf_args = printfcop.toPrintfArgs(.c23, "%% %%%%", .{});
     try std.testing.expect(@typeInfo(@TypeOf(printf_args)).@"struct".is_tuple);
     try std.testing.expectEqual(0, printf_args.len);
 }
@@ -40,7 +40,6 @@ test "all supported specifiers" {
         "%a%la%La%A%lA%LA" ++
         "%c%s%p" ++
         "%n%hhn%hn%ln%lln%zn%w8n%w16n%w32n%w64n";
-    // zig fmt: off
     const args =
         .{ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 } ++
         .{ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 } ++
@@ -54,9 +53,8 @@ test "all supported specifiers" {
         .{ 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 } ++
         .{ 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 } ++
         .{ 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 } ++
-        .{ 'A', "ABC", null } ++
+        .{ 'A', "ABC", @as(?*const anyopaque, @ptrFromInt(256)) } ++
         .{ &n, &hhn, &hn, &ln, &lln, &zn, &w8n, &w16n, &w32n, &w64n };
-    // zig fmt: on
 
     // zig fmt: off
     const expected_printf_args =
@@ -84,7 +82,7 @@ test "all supported specifiers" {
         .{ @as(f64, 0.5), @as(f64, 0.5), @as(c_longdouble, 0.5) } ++
         .{ @as(f64, 0.5), @as(f64, 0.5), @as(c_longdouble, 0.5) } ++
         .{ @as(f64, 0.5), @as(f64, 0.5), @as(c_longdouble, 0.5) } ++
-        .{ @as(u8, 'A'), @as([*:0]const u8, "ABC"), @as(?*const anyopaque, null) } ++
+        .{ @as(u8, 'A'), @as([*:0]const u8, "ABC"), @as(?*const anyopaque, @ptrFromInt(256)) } ++
         .{ @as(*c_int, &n),  @as(*i8, &hhn), @as(*c_short, &hn),   @as(*c_long, &ln),   @as(*c_longlong, &lln)  } ++
         .{ @as(*isize, &zn), @as(*i8, &w8n), @as(*i16,     &w16n), @as(*i32,    &w32n), @as(*i64,        &w64n) };
     // zig fmt: on
